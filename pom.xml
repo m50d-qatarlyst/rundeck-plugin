@@ -11,26 +11,19 @@
   <version>2.12-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
-  <name>Jenkins RunDeck plugin</name>
-  <description>Jenkins plugin for RunDeck integration : trigger, notifier and option provider.</description>
+  <name>Qatarlyst Jenkins RunDeck plugin</name>
+  <description>Jenkins plugin for RunDeck integration : trigger, notifier and option provider. Modified by Qatarlyst</description>
   <url>http://wiki.jenkins-ci.org/display/JENKINS/RunDeck+Plugin</url>
   <scm>
-    <url>https://github.com/jenkinsci/rundeck-plugin</url>
-    <connection>scm:git:git://github.com/jenkinsci/rundeck-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/rundeck-plugin.git</developerConnection>
+    <url>https://github.com/m50d-qatarlyst/rundeck-plugin</url>
+    <connection>scm:git:git://github.com/m50d-qatarlyst/rundeck-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:m50d-qatarlyst/rundeck-plugin.git</developerConnection>
   </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
-  <developers>
-    <developer>
-      <id>vbehar</id>
-      <name>Vincent Behar</name>
-    </developer>
-  </developers>
-
   <build>
     <plugins>
       <plugin>
@@ -58,7 +51,6 @@
     </dependency>
   </dependencies>
 
-  <!-- get every artifact through maven.glassfish.org, which proxies all the artifacts that we need -->
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
