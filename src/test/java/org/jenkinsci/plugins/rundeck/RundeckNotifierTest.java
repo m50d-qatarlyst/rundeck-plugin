@@ -52,8 +52,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         assertTrue(s.contains("Notifying RunDeck..."));
         assertTrue(s.contains("Notification succeeded !"));
 
-        addScmCommit(build.getWorkspace(), "commit message");
-
         // second build
         build = assertBuildStatusSuccess(project.scheduleBuild2(0).get());
         assertTrue(buildContainsAction(build, RundeckExecutionBuildBadgeAction.class));
@@ -187,8 +185,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         String s = FileUtils.readFileToString(build.getLogFile());
         assertFalse(s.contains("Notifying RunDeck"));
 
-        addScmCommit(build.getWorkspace(), "commit message");
-
         // second build
         build = assertBuildStatus(Result.FAILURE, project.scheduleBuild2(0).get());
         assertFalse(buildContainsAction(build, RundeckExecutionBuildBadgeAction.class));
@@ -234,23 +230,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
     private SubversionSCM createScm() throws Exception {
         File emptyRepository = new CopyExisting(getClass().getResource("empty-svn-repository.zip")).allocate();
         return new SubversionSCM("file://" + emptyRepository.getPath());
-    }
-
-    private void addScmCommit(FilePath workspace, String commitMessage) throws Exception {
-        SVNClientManager svnm = SubversionSCM.createSvnClientManager();
-
-        FilePath newFilePath = workspace.child("new-file");
-        File newFile = new File(newFilePath.getRemote());
-        newFilePath.touch(System.currentTimeMillis());
-        svnm.getWCClient().doAdd(newFile, false, false, false, SVNDepth.INFINITY, false, false);
-        svnm.getCommitClient().doCommit(new File[] { newFile },
-                                        false,
-                                        commitMessage,
-                                        null,
-                                        null,
-                                        false,
-                                        false,
-                                        SVNDepth.EMPTY);
     }
 
     /**
