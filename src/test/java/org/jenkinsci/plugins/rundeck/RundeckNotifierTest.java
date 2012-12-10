@@ -8,7 +8,6 @@ import hudson.model.Result;
 import hudson.model.Cause.UpstreamCause;
 import hudson.model.FreeStyleProject;
 import hudson.model.Run;
-import hudson.scm.SubversionSCM;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -43,7 +42,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         // first build
         FreeStyleBuild build = assertBuildStatusSuccess(project.scheduleBuild2(0).get());
@@ -67,7 +65,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         FreeStyleBuild build = assertBuildStatusSuccess(project.scheduleBuild2(0).get());
         assertTrue(buildContainsAction(build, RundeckExecutionBuildBadgeAction.class));
@@ -82,7 +79,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         FreeStyleBuild build = assertBuildStatusSuccess(project.scheduleBuild2(0).get());
         assertTrue(buildContainsAction(build, RundeckExecutionBuildBadgeAction.class));
@@ -108,7 +104,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         // second build
         FreeStyleBuild build = assertBuildStatus(Result.FAILURE, project.scheduleBuild2(0).get());
@@ -139,7 +134,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject("my project name");
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         // first build
         FreeStyleBuild build = assertBuildStatusSuccess(project.scheduleBuild2(0).get());
@@ -155,12 +149,10 @@ public class RundeckNotifierTest extends HudsonTestCase {
 
         FreeStyleProject upstream = createFreeStyleProject("upstream");
         upstream.getBuildersList().add(new MockBuilder(Result.SUCCESS));
-        upstream.setScm(createScm());
 
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         FreeStyleBuild upstreamBuild = assertBuildStatusSuccess(upstream.scheduleBuild2(0).get());
         FreeStyleBuild build = assertBuildStatusSuccess(project.scheduleBuild2(0, new UpstreamCause((Run<?, ?>) upstreamBuild)).get());
@@ -177,7 +169,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.FAILURE));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         // first build
         FreeStyleBuild build = assertBuildStatus(Result.FAILURE, project.scheduleBuild2(0).get());
@@ -199,7 +190,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         FreeStyleProject project = createFreeStyleProject();
         project.getBuildersList().add(new MockBuilder(Result.SUCCESS));
         project.getPublishersList().add(notifier);
-        project.setScm(createScm());
 
         // first build
         FreeStyleBuild build = assertBuildStatusSuccess(project.scheduleBuild2(0).get());
@@ -225,11 +215,6 @@ public class RundeckNotifierTest extends HudsonTestCase {
         } catch (IOException e) {
             return "";
         }
-    }
-
-    private SubversionSCM createScm() throws Exception {
-        File emptyRepository = new CopyExisting(getClass().getResource("empty-svn-repository.zip")).allocate();
-        return new SubversionSCM("file://" + emptyRepository.getPath());
     }
 
     /**
