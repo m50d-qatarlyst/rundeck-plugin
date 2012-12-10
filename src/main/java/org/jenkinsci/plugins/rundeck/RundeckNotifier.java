@@ -93,16 +93,8 @@ public class RundeckNotifier extends Notifier {
             return false;
         }
 
-        if (shouldNotifyRundeck(build, listener)) {
-            return notifyRundeck(rundeck, build, listener);
-        }
-
-        return true;
-    }
-
-    private boolean shouldNotifyRundeck(AbstractBuild<?, ?> build, BuildListener listener) {
         listener.getLogger().println("Notifying RunDeck...");
-        return true;
+        return notifyRundeck(rundeck, build, listener);
     }
 
     /**
